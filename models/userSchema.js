@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// use schema or document structure
+// user schema or document structure
 const userSchema = new mongoose.Schema({
     username : {
         type : String,

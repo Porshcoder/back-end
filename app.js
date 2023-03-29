@@ -15,6 +15,7 @@ const port = process.env.PORT;
 //require model
 
 const Users = require('./models/userSchema');
+const Message = require('./models/msgSchema')
 
 //these method is used to get data and cookies from frontend
 app.use(express.json());
@@ -25,7 +26,7 @@ app.get('/', (req, res) =>{
     res.send("hello world");
 })
 
-// registion
+// registratiion
 app.post('/register', async (req, res) =>{
     try {
       // get body or data
@@ -84,7 +85,39 @@ app.post('/login', async(req, res) =>{
   }
 })
     
+// Message
+app.post('/message', async (req, res) =>{
+  try {
+    // get body or data
+  const name = req.body.name;
+  const email = req.body.email;
+  const message = req.body.message;
+  
+  const sendMsg = new Message({
+      name : name,
+      email : email,
+      message : message
 
+  });
+
+  //save method is used to create user or insert user
+  // but before saving or inserting, password will hash
+  //because of hashing.after hash, it will save to the db 
+
+  const created = await sendMsg.save();
+  console.log(created);
+  res.status(200).send('Sent');
+
+  } catch (error) {
+    res.status(400).send(error)  
+  }
+})
+
+//logout page
+app.get('/logout', (req, res)=>{
+  res.clearCookie("jwt", {path : '/'})
+  res.status(200).send("User Logged Out")
+})
 
 // Run Server
 app.listen(port, () =>{
